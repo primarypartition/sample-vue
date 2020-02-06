@@ -13,55 +13,20 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody v-for="item in getMenuItems" :key="item.name">
     <tr>
-      <td>apple-ice-cream</td>      
+      <td> {{ item.name }} </td>      
     </tr>
 
     <tr>
-      <td>apple-ice-cream</td>      
+      <td>{{ item.description }}</td>      
     </tr>
 
-    <tr>
-      <td>large</td>
-      <td>$10</td>
+    <tr v-for="option in item.options" :key="option.size">
+      <td>{{ option.size }}</td>
+      <td>{{ option.price }}</td>
       <td>
-        <button class="btn btn-sm btn-outline-success" 
-                type="button">+</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td>apple-ice-cream</td>      
-    </tr>
-
-    <tr>
-      <td>apple-ice-cream</td>      
-    </tr>
-
-    <tr>
-      <td>large</td>
-      <td>$10</td>
-      <td>
-        <button class="btn btn-sm btn-outline-success" 
-                type="button">+</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td>apple-ice-cream</td>      
-    </tr>
-
-    <tr>
-      <td>apple-ice-cream</td>      
-    </tr>
-
-    <tr>
-      <td>large</td>
-      <td>$10</td>
-      <td>
-        <button class="btn btn-sm btn-outline-success" 
-                type="button">+</button>
+        <button class="btn" type="button" v-on:click="addToBasket(item, option)">+</button>
       </td>
     </tr>
   </tbody>
@@ -73,19 +38,106 @@
 
 <h3>basket</h3>
 
+<div>
+
+<table class="table table-hover">
+
+  <tbody>
+    <tr v-for="item in basket" :key="item.name+item.size">
+      <td>
+        <button type="button">-</button>
+      </td>
+
+      <td> {{ item.quantity }} </td>
+      
+      <td>
+        <button type="button">+</button>
+      </td>
+
+      <td> {{ item.name }} </td>
+
+      <td> {{ item.price }} </td>
+    </tr>   
+  </tbody>
+
+</table>
+
 </div>
 
+</div>
+ 
 </div>
 
 </template>
 
 <script>
 export default {
-  name: 'appMenu'
+  name: 'appMenu',
+  data() {
+    return {
+      basket: [],
+
+      getMenuItems: {
+        1: {
+          'name': 'Butter Pecan',
+          'description': 'is a smooth vanilla ice cream with a slight buttery flavor',
+          'options': [{
+            'size': 9,
+            'price': 6.95
+          }, {
+            'size': 12,
+            'price': 10.95
+          }]
+        },
+        2: {
+          'name': 'Hokey pokey',
+          'description': 'a flavour of ice cream in New Zealand, consisting of plain vanilla',
+          'options': [{
+            'size': 9,
+            'price': 7.95
+          }, {
+            'size': 12,
+            'price': 12.95
+          }]
+        },
+        3: {
+          'name': 'Pistachio ice cream',
+          'description': 'also referred to as pistachio nut ice cream',
+          'options': [{
+            'size': 9,
+            'price': 7.95
+          }, {
+            'size': 12,
+            'price': 12.95
+          }]
+        }        
+      }
+    }
+  },
+
+  methods: {
+    async addToBasket(item, option) {
+      const iceExist = await this.basket.find(
+        (icecream) => item.name === icecream.name && option.size === icecream.size        
+      );
+      
+      if(iceExist) {
+        iceExist.quantity++;
+
+        return; 
+      }
+
+      this.basket.push({
+        name: item.name,
+        price: option.price,
+        size: option.size,
+        quantity: 1
+      }) 
+    }
+  }  
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 .menu_wrapper {
