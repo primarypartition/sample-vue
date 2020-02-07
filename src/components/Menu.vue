@@ -38,31 +38,45 @@
 
 <h3>basket</h3>
 
+<div v-if="basket.length > 0">
+
+  <table class="table table-hover">
+
+    <tbody>
+      <tr v-for="item in basket" :key="item.name+item.size">
+        <td>
+          <button type="button" v-on:click="decreaseQuantity(item)">-</button>
+        </td>
+
+        <td> {{ item.quantity }} </td>
+        
+        <td>
+          <button type="button" v-on:click="increaseQuantity(item)">+</button>
+        </td>
+
+        <td> {{ item.name }} - {{ item.size }} </td>
+
+        <td> - ${{ item.price * item.quantity }} </td>
+      </tr>   
+    </tbody>
+
+  </table>
+
 <div>
+  <p>
+    {{ basketMsg }}
+  </p>
 
-<table class="table table-hover">
-
-  <tbody>
-    <tr v-for="item in basket" :key="item.name+item.size">
-      <td>
-        <button type="button">-</button>
-      </td>
-
-      <td> {{ item.quantity }} </td>
-      
-      <td>
-        <button type="button">+</button>
-      </td>
-
-      <td> {{ item.name }} </td>
-
-      <td> {{ item.price }} </td>
-    </tr>   
-  </tbody>
-
-</table>
+  <button>Order Now</button>
 
 </div>
+
+</div>
+
+<div v-else>
+  Basket is empty
+</div>
+
 
 </div>
  
@@ -76,6 +90,8 @@ export default {
   data() {
     return {
       basket: [],
+
+      basketMsg: "Basket is empty",
 
       getMenuItems: {
         1: {
@@ -133,7 +149,24 @@ export default {
         size: option.size,
         quantity: 1
       }) 
+    },
+
+    increaseQuantity(item) {
+      item.quantity++;
+    },
+
+    decreaseQuantity(item) {
+      item.quantity--;
+
+      if(item.quantity == 0) {
+        this.removeItem(item);
+      }
+    },
+
+    removeItem(item) {
+      this.basket.splice(this.basket.indexOf(item), 1)
     }
+
   }  
 }
 </script>

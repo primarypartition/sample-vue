@@ -6,24 +6,30 @@
 
       <app-menu></app-menu>
 
+      <app-admin></app-admin>
+    
     <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-import Home from './components/Home.vue'
+//import Home from './components/Home.vue'
 import Footer from './components/Footer.vue'
 
-import Menu from './components/Menu.vue'
+//import Menu from './components/Menu.vue'
+
+import Admin from './components/Admin.vue'
 
 export default {
   name: 'app',
   components: {
     appHeader: Header,
-    appHome: Home,
-    appMenu: Menu,
-    appFooter: Footer
+//    appHome: Home,
+//    appMenu: Menu,   
+    appFooter: Footer,
+
+    appAdmin: Admin
   }
 }
 </script>
